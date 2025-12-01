@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lustraa Lenses - Humanized Design</title>
-    
+   
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+   
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -37,7 +37,7 @@
         .animate-gradient-x {
             animation: gradient-x 8s ease infinite;
         }
-        
+       
         /* Blob transition for smooth movement */
         #gradient-blob {
             transition: transform 0.1s ease-out;
@@ -54,7 +54,7 @@
             opacity: 0;
             transform: translateY(10px);
         }
-        
+       
         /* Hide scrollbar for internal content */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -69,26 +69,51 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .mobile-menu.hidden {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .mobile-menu.visible {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-[#F2F2F2] flex items-center justify-center p-2 md:p-6 text-gray-900 overflow-hidden">
 
     <!-- Main Container - Broad Design (96% Width) -->
     <div class="bg-[#FFFCF9] w-[96%] max-w-[1800px] h-[92vh] rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col transition-all duration-500 border border-white/50">
-        
+       
         <!-- Background Gradient Blob - Animated -->
-        <div id="gradient-blob" 
+        <div id="gradient-blob"
              class="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-gradient-to-r from-purple-200 via-pink-100 to-orange-100 rounded-full blur-[120px] opacity-50 pointer-events-none transform -translate-x-1/2 -translate-y-1/2 z-0">
         </div>
 
         <!-- Navigation Bar -->
-        <nav class="relative z-20 flex justify-between items-center px-10 py-8 flex-shrink-0">
-            <div class="text-3xl font-bold tracking-tight text-black cursor-pointer flex items-center gap-2" onclick="navigateTo('home')">
+        <nav class="relative z-20 flex justify-between items-center px-6 md:px-10 py-8 flex-shrink-0">
+            <div class="text-2xl md:text-3xl font-bold tracking-tight text-black cursor-pointer flex items-center gap-2" onclick="navigateTo('home')">
                 Lustraa Lenses.
                 <span class="w-2 h-2 rounded-full bg-orange-400 block"></span>
             </div>
-            
-            <div class="hidden lg:flex items-center space-x-14 text-sm font-medium text-gray-500 uppercase tracking-widest">
+           
+            <div class="hidden lg:flex items-center space-x-8 xl:space-x-14 text-xs xl:text-sm font-medium text-gray-500 uppercase tracking-widest">
                 <button onclick="navigateTo('home')" class="hover:text-black transition-colors nav-link" data-target="home">Home</button>
                 <button onclick="navigateTo('shop')" class="hover:text-black transition-colors nav-link" data-target="shop">Products</button>
                 <button onclick="navigateTo('technology')" class="hover:text-black transition-colors nav-link" data-target="technology">Technology</button>
@@ -96,28 +121,51 @@
                 <button onclick="navigateTo('contact')" class="hover:text-black transition-colors nav-link" data-target="contact">Contact</button>
             </div>
 
-            <button onclick="navigateTo('shop')" class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group bg-white/50 backdrop-blur-sm z-50">
+            <!-- Mobile Menu Button -->
+            <div class="lg:hidden flex items-center space-x-4">
+                <button onclick="navigateTo('shop')" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group bg-white/50 backdrop-blur-sm z-50">
+                    <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                </button>
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group bg-white/50 backdrop-blur-sm z-50">
+                    <i data-lucide="menu" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Cart Button -->
+            <button onclick="navigateTo('shop')" class="hidden lg:flex w-12 h-12 rounded-full border border-gray-200 items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group bg-white/50 backdrop-blur-sm z-50">
                 <i data-lucide="shopping-bag" class="w-5 h-5"></i>
             </button>
         </nav>
 
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu hidden lg:hidden px-6 py-4 bg-white/50 backdrop-blur-md border-b border-gray-200">
+            <div class="flex flex-col space-y-3">
+                <button onclick="navigateTo('home'); toggleMobileMenu()" class="py-2 hover:text-black transition-colors nav-link text-sm font-medium text-gray-500 uppercase tracking-widest text-left" data-target="home">Home</button>
+                <button onclick="navigateTo('shop'); toggleMobileMenu()" class="py-2 hover:text-black transition-colors nav-link text-sm font-medium text-gray-500 uppercase tracking-widest text-left" data-target="shop">Products</button>
+                <button onclick="navigateTo('technology'); toggleMobileMenu()" class="py-2 hover:text-black transition-colors nav-link text-sm font-medium text-gray-500 uppercase tracking-widest text-left" data-target="technology">Technology</button>
+                <button onclick="navigateTo('about'); toggleMobileMenu()" class="py-2 hover:text-black transition-colors nav-link text-sm font-medium text-gray-500 uppercase tracking-widest text-left" data-target="about">About</button>
+                <button onclick="navigateTo('contact'); toggleMobileMenu()" class="py-2 hover:text-black transition-colors nav-link text-sm font-medium text-gray-500 uppercase tracking-widest text-left" data-target="contact">Contact</button>
+                <button onclick="navigateTo('promotionals'); toggleMobileMenu()" class="py-2 hover:text-black transition-colors nav-link text-sm font-medium text-gray-500 uppercase tracking-widest text-left" data-target="promotionals">Promotionals</button>
+            </div>
+        </div>
+
         <!-- Dynamic Content Container -->
         <div id="content-container" class="relative z-10 flex-grow flex flex-col relative overflow-y-auto no-scrollbar scroll-smooth">
-            
+           
             <!-- ================= PAGE: HOME ================= -->
             <div id="page-home" class="page-section w-full h-full flex flex-col justify-center items-center text-center px-4 absolute inset-0">
                 <div class="space-y-6 max-w-6xl">
-                    <h1 class="text-6xl md:text-8xl lg:text-9xl font-medium tracking-tighter text-gray-900 leading-[0.9]">
+                    <h1 class="text-4xl md:text-6xl lg:text-8xl xl:text-9xl font-medium tracking-tighter text-gray-900 leading-[0.9]">
                         Humanized
                     </h1>
-                    <h2 class="text-6xl md:text-8xl lg:text-9xl font-medium tracking-tighter leading-[0.9]">
+                    <h2 class="text-4xl md:text-6xl lg:text-8xl xl:text-9xl font-medium tracking-tighter leading-[0.9]">
                         <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-orange-400 animate-gradient-x bg-[length:200%_auto]">
                             Design.
                         </span>
                     </h2>
                 </div>
 
-                <div class="absolute bottom-16 left-16 max-w-sm text-left hidden lg:block">
+                <div class="absolute bottom-16 left-8 md:left-16 max-w-sm text-left hidden lg:block">
                     <p class="text-gray-500 text-sm leading-relaxed mb-6 font-light">
                         "Precision, awareness, and the wisdom to see the surface."<br>
                         Lustraa lenses illuminate your path, allowing you to explore life's intricate details and cultivate a worldview rich with meaning.
@@ -128,24 +176,24 @@
                     </button>
                 </div>
 
-                <div class="absolute bottom-16 right-16 flex items-center space-x-6">
+                <div class="absolute bottom-16 right-8 md:right-16 flex items-center space-x-6">
                     <div class="text-right hidden lg:block">
                         <span class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Latest Campaign</span>
                         <span class="text-lg font-medium">Aspire Your Life</span>
                     </div>
-                    <button class="w-20 h-20 rounded-full bg-white hover:scale-105 flex items-center justify-center transition-all shadow-lg cursor-pointer">
+                    <button onclick="navigateTo('promotionals')" class="w-20 h-20 rounded-full bg-white hover:scale-105 flex items-center justify-center transition-all shadow-lg cursor-pointer">
                         <i data-lucide="play" class="ml-1 w-6 h-6 text-gray-900 fill-current"></i>
                     </button>
                 </div>
             </div>
 
             <!-- ================= PAGE: PRODUCTS / SHOP ================= -->
-            <div id="page-shop" class="page-section hidden-page w-full min-h-full px-8 md:px-16 py-10 overflow-y-auto">
+            <div id="page-shop" class="page-section hidden-page w-full min-h-full px-6 md:px-16 py-10 overflow-y-auto">
                 <div class="max-w-[1600px] mx-auto pb-32">
-                    <div class="flex justify-between items-end mb-16 border-b border-gray-200 pb-8">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 border-b border-gray-200 pb-8 space-y-4 md:space-y-0">
                         <div>
-                            <h2 class="text-5xl font-medium mb-4 tracking-tight">Premium Collection</h2>
-                            <p class="text-gray-500 text-lg font-light">Engineered by Yash Optics & Lens Limited.</p>
+                            <h2 class="text-4xl md:text-5xl font-medium mb-4 tracking-tight">Premium Collection</h2>
+                            <p class="text-gray-500 text-base md:text-lg font-light">Engineered by Yash Optics & Lens Limited.</p>
                         </div>
                         <div class="hidden md:flex space-x-4 text-sm font-medium text-gray-500">
                             <span class="text-black cursor-pointer">All</span>
@@ -154,10 +202,10 @@
                             <span class="hover:text-black cursor-pointer">Luxury</span>
                         </div>
                     </div>
-                    
+                   
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                         <!-- Product: HD -->
-                        <div class="bg-white/40 backdrop-blur-md p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer">
+                        <div class="bg-white/40 backdrop-blur-md p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer" onclick="viewProductDetail('hd')">
                             <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-200 mb-8 group-hover:scale-110 transition-transform shadow-inner"></div>
                             <h3 class="text-2xl font-bold mb-3">Lustraa HD</h3>
                             <p class="text-gray-500 text-sm mb-6 leading-relaxed">High Definition Clarity. Experience the world in its truest form with enhanced contrast and reduced eye strain.</p>
@@ -165,7 +213,7 @@
                         </div>
 
                         <!-- Product: PhotoFun -->
-                        <div class="bg-white/40 backdrop-blur-md p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer relative overflow-hidden">
+                        <div class="bg-white/40 backdrop-blur-md p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer relative overflow-hidden" onclick="viewProductDetail('photofun')">
                              <div class="absolute top-0 right-0 bg-black text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">New</div>
                             <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-pink-400 via-purple-400 to-indigo-400 mb-8 group-hover:scale-110 transition-transform shadow-inner"></div>
                             <h3 class="text-2xl font-bold mb-3">PhotoFun Fashion</h3>
@@ -174,15 +222,15 @@
                         </div>
 
                         <!-- Product: Luxe -->
-                        <div class="bg-gradient-to-b from-gray-50 to-white p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer ring-1 ring-gray-100">
+                        <div class="bg-gradient-to-b from-gray-50 to-white p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer ring-1 ring-gray-100" onclick="viewProductDetail('luxe')">
                             <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-yellow-200 to-yellow-500 mb-8 group-hover:scale-110 transition-transform shadow-inner"></div>
                             <h3 class="text-2xl font-bold mb-3">Lustraa Luxe</h3>
                             <p class="text-gray-500 text-sm mb-6 leading-relaxed">Revolutionary Luxury Coating. Surpasses light transmission limits for the ultimate sharpness of vision.</p>
                             <span class="text-xs font-bold uppercase tracking-widest flex items-center text-yellow-700">Premium <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i></span>
                         </div>
-                        
+                       
                         <!-- Product: Drivease -->
-                        <div class="bg-white/40 backdrop-blur-md p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer">
+                        <div class="bg-white/40 backdrop-blur-md p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer" onclick="viewProductDetail('drivease')">
                             <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-300 to-orange-400 mb-8 group-hover:scale-110 transition-transform shadow-inner"></div>
                             <h3 class="text-2xl font-bold mb-3">Drivease</h3>
                             <p class="text-gray-500 text-sm mb-6 leading-relaxed">Reduced Glare. Designed for wearers sensitive to bright light during night driving.</p>
@@ -190,7 +238,7 @@
                         </div>
 
                         <!-- Product: Quartz -->
-                        <div class="bg-white/40 backdrop-blur-md p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer">
+                        <div class="bg-white/40 backdrop-blur-md p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer" onclick="viewProductDetail('quartz')">
                             <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-gray-200 to-gray-400 mb-8 group-hover:scale-110 transition-transform shadow-inner"></div>
                             <h3 class="text-2xl font-bold mb-3">Quartz</h3>
                             <p class="text-gray-500 text-sm mb-6 leading-relaxed">Ultimate Durability. High resistance to breakage while maintaining a lightweight profile.</p>
@@ -198,7 +246,7 @@
                         </div>
 
                         <!-- Product: MyoChild -->
-                        <div class="bg-white/40 backdrop-blur-md p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer">
+                        <div class="bg-white/40 backdrop-blur-md p-10 rounded-[32px] border border-white/60 hover-card transition-all group cursor-pointer" onclick="viewProductDetail('myochild')">
                             <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-emerald-300 to-teal-500 mb-8 group-hover:scale-110 transition-transform shadow-inner"></div>
                             <h3 class="text-2xl font-bold mb-3">MyoChild</h3>
                             <p class="text-gray-500 text-sm mb-6 leading-relaxed">Myopia Management. Innovative lens design to slow down myopia progression in youth.</p>
@@ -209,10 +257,10 @@
             </div>
 
             <!-- ================= PAGE: TECHNOLOGY ================= -->
-            <div id="page-technology" class="page-section hidden-page w-full min-h-full px-8 md:px-16 py-10 flex flex-col items-center">
+            <div id="page-technology" class="page-section hidden-page w-full min-h-full px-6 md:px-16 py-10 flex flex-col items-center overflow-y-auto">
                  <div class="max-w-5xl w-full">
-                    <h2 class="text-5xl font-medium mb-12 text-center">Engineered for Perfection</h2>
-                    
+                    <h2 class="text-4xl md:text-5xl font-medium mb-12 text-center">Engineered for Perfection</h2>
+                   
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                         <div class="space-y-8">
                             <div class="flex gap-6">
@@ -221,7 +269,7 @@
                                 </div>
                                 <div>
                                     <h4 class="text-xl font-bold mb-2">UV+ Protection</h4>
-                                    <p class="text-gray-500 text-sm leading-relaxed">Filters out harmful UV light from the entire lens surface. Oil & smudge repellent.</p>
+                                    <p class="text-gray-500 text-sm leading-relaxed">Filters out harmful UV light from the entire lens surface. Oil & smudge repellent coatings for durability.</p>
                                 </div>
                             </div>
                             <div class="flex gap-6">
@@ -242,8 +290,17 @@
                                     <p class="text-gray-500 text-sm leading-relaxed">Sensitive color-changing molecules instantly detect ultraviolet light for rapid adaptation.</p>
                                 </div>
                             </div>
+                            <div class="flex gap-6">
+                                <div class="w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center text-green-600 shrink-0">
+                                    <i data-lucide="zap" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-2">Nano-Layer Technology</h4>
+                                    <p class="text-gray-500 text-sm leading-relaxed">Advanced multi-layer coating for superior scratch resistance and optical clarity.</p>
+                                </div>
+                            </div>
                         </div>
-                        
+                       
                         <div class="bg-gray-100 rounded-[40px] aspect-square flex items-center justify-center relative overflow-hidden">
                              <!-- Abstract Tech Visual -->
                              <div class="absolute inset-0 bg-gradient-to-tr from-gray-200 to-white opacity-80"></div>
@@ -259,76 +316,159 @@
             </div>
 
             <!-- ================= PAGE: ABOUT ================= -->
-            <div id="page-about" class="page-section hidden-page w-full h-full px-8 md:px-24 py-8 flex flex-col items-center justify-center text-center">
+            <div id="page-about" class="page-section hidden-page w-full min-h-full px-6 md:px-24 py-8 flex flex-col items-center justify-center text-center overflow-y-auto">
                  <div class="max-w-4xl">
                     <span class="text-sm font-bold text-blue-500 uppercase tracking-widest mb-4 block">Our Philosophy</span>
-                    <h2 class="text-5xl md:text-6xl font-medium mb-8">World Insight.</h2>
-                    <p class="text-xl md:text-2xl text-gray-600 leading-relaxed mb-8 font-light">
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-medium mb-8">World Insight.</h2>
+                    <p class="text-lg md:text-xl lg:text-2xl text-gray-600 leading-relaxed mb-8 font-light">
                         "Vision isn't only about what you see, but how you perceive the world."
                     </p>
-                    <p class="text-gray-500 leading-relaxed mb-12 max-w-2xl mx-auto">
+                    <p class="text-gray-500 leading-relaxed mb-12 max-w-2xl mx-auto text-sm md:text-base">
                         Lustraa is a next-generation eyewear lens brand from <strong>Yash Optics & Lens Ltd.</strong>, crafted for those who seek more than just vision correction — they seek clarity, purpose, and style. We stand at the intersection of luxury and accessibility.
                     </p>
-                    
+
+                    <div class="bg-white/60 backdrop-blur-md rounded-[32px] p-8 mb-12 border border-white/60">
+                        <h3 class="text-2xl font-bold mb-6">About Yash Optics & Lens Limited</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6 text-sm md:text-base">
+                            Yash Optics & Lens Limited is a leading manufacturer of premium optical lenses, committed to innovation and quality. Our state-of-the-art facility in Mumbai, India employs cutting-edge technology to produce world-class eyewear solutions that combine precision with humanized design.
+                        </p>
+                        <div class="flex flex-wrap justify-center gap-3">
+                            <span class="px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-xs md:text-sm font-medium text-blue-700">Precision Optics</span>
+                            <span class="px-4 py-2 rounded-full bg-purple-50 border border-purple-200 text-xs md:text-sm font-medium text-purple-700">Japanese Technology</span>
+                            <span class="px-4 py-2 rounded-full bg-pink-50 border border-pink-200 text-xs md:text-sm font-medium text-pink-700">Human Centric Design</span>
+                            <span class="px-4 py-2 rounded-full bg-green-50 border border-green-200 text-xs md:text-sm font-medium text-green-700">Innovation Driven</span>
+                        </div>
+                    </div>
+
                     <div class="flex flex-wrap justify-center gap-4">
-                        <span class="px-6 py-3 rounded-full bg-white border border-gray-200 text-sm font-medium">Precision Optics</span>
-                        <span class="px-6 py-3 rounded-full bg-white border border-gray-200 text-sm font-medium">Japanese Technology</span>
-                        <span class="px-6 py-3 rounded-full bg-white border border-gray-200 text-sm font-medium">Human Centric</span>
+                        <a href="https://www.instagram.com/lustraa_lenses/" target="_blank" class="px-6 py-3 rounded-full bg-white border border-gray-200 text-sm font-medium hover:bg-black hover:text-white transition-all">Follow Instagram</a>
+                        <a href="https://www.facebook.com/LustraaCoatings" target="_blank" class="px-6 py-3 rounded-full bg-white border border-gray-200 text-sm font-medium hover:bg-black hover:text-white transition-all">Like Facebook</a>
                     </div>
                  </div>
             </div>
 
             <!-- ================= PAGE: CONTACT ================= -->
-            <div id="page-contact" class="page-section hidden-page w-full h-full px-8 md:px-24 py-8 flex items-center justify-center">
-                <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div id="page-contact" class="page-section hidden-page w-full min-h-full px-6 md:px-24 py-8 flex items-center justify-center overflow-y-auto">
+                <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
                     <div>
-                        <h2 class="text-5xl font-medium mb-6">Let's Talk.</h2>
-                        <p class="text-gray-600 mb-10 text-lg">Whether you need help choosing a lens or have a partnership inquiry, our team is ready.</p>
-                        
+                        <h2 class="text-4xl md:text-5xl font-medium mb-6">Let's Talk.</h2>
+                        <p class="text-gray-600 mb-10 text-base md:text-lg">Whether you need help choosing a lens or have a partnership inquiry, our team is ready.</p>
+                       
                         <div class="space-y-8">
-                            <div class="flex items-center space-x-6 group cursor-pointer">
+                            <a href="mailto:inquiry@yashopticsandlens.com" class="flex items-center space-x-6 group cursor-pointer hover:opacity-80 transition-opacity">
                                 <div class="w-14 h-14 rounded-full bg-white border border-gray-100 flex items-center justify-center shrink-0 group-hover:bg-black group-hover:text-white transition-colors shadow-sm">
                                     <i data-lucide="mail" class="w-6 h-6"></i>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-gray-900 text-lg">Email Us</h4>
-                                    <p class="text-gray-500">support@lustraalenses.com</p>
+                                    <p class="text-gray-500 text-sm md:text-base">inquiry@yashopticsandlens.com</p>
                                 </div>
-                            </div>
+                            </a>
+                            <a href="tel:+919372767400" class="flex items-center space-x-6 group cursor-pointer hover:opacity-80 transition-opacity">
+                                <div class="w-14 h-14 rounded-full bg-white border border-gray-100 flex items-center justify-center shrink-0 group-hover:bg-black group-hover:text-white transition-colors shadow-sm">
+                                    <i data-lucide="phone" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-lg">Call Us</h4>
+                                    <p class="text-gray-500 text-sm md:text-base">+91 93727 67400 / +91 91374 55376</p>
+                                </div>
+                            </a>
                             <div class="flex items-center space-x-6 group cursor-pointer">
                                 <div class="w-14 h-14 rounded-full bg-white border border-gray-100 flex items-center justify-center shrink-0 group-hover:bg-black group-hover:text-white transition-colors shadow-sm">
                                     <i data-lucide="map-pin" class="w-6 h-6"></i>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-gray-900 text-lg">Visit HQ</h4>
-                                    <p class="text-gray-500">Yash Optics And Lens Limited, Mumbai</p>
+                                    <p class="text-gray-500 text-sm md:text-base">34 ABC, Kandivali Co Op Industrial Estate Ltd,<br> Govt Ind Estate, Charkop, Kandivali West,<br> Mumbai – 400 067, Maharashtra, India</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="bg-white/80 backdrop-blur-xl p-10 rounded-[40px] shadow-lg border border-white/50">
-                        <form onsubmit="event.preventDefault(); alert('Message sent!');" class="space-y-6">
-                            <div class="grid grid-cols-2 gap-6">
+                   
+                    <div class="bg-white/80 backdrop-blur-xl p-8 md:p-10 rounded-[40px] shadow-lg border border-white/50">
+                        <form onsubmit="submitContactForm(event)" class="space-y-6">
+                            <div class="grid grid-cols-2 gap-4 md:gap-6">
                                 <div>
                                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">First Name</label>
-                                    <input type="text" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-blue-400 focus:bg-white transition-all" placeholder="John">
+                                    <input type="text" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-blue-400 focus:bg-white transition-all text-sm" placeholder="John">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Last Name</label>
-                                    <input type="text" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-blue-400 focus:bg-white transition-all" placeholder="Doe">
+                                    <input type="text" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-blue-400 focus:bg-white transition-all text-sm" placeholder="Doe">
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Email Address</label>
-                                <input type="email" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-blue-400 focus:bg-white transition-all" placeholder="john@example.com">
+                                <input type="email" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-blue-400 focus:bg-white transition-all text-sm" placeholder="john@example.com">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Message</label>
-                                <textarea rows="4" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-blue-400 focus:bg-white transition-all" placeholder="Tell us about your project..."></textarea>
+                                <textarea rows="4" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-blue-400 focus:bg-white transition-all text-sm" placeholder="Tell us about your inquiry..."></textarea>
                             </div>
-                            <button type="submit" class="w-full py-4 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-transform active:scale-95">Send Message</button>
+                            <button type="submit" class="w-full py-4 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-transform active:scale-95 text-sm md:text-base">Send Message</button>
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE: PROMOTIONALS ================= -->
+            <div id="page-promotionals" class="page-section hidden-page w-full min-h-full px-6 md:px-16 py-10 overflow-y-auto">
+                <div class="max-w-[1600px] mx-auto pb-32">
+                    <div class="flex justify-between items-end mb-16 border-b border-gray-200 pb-8">
+                        <div>
+                            <h2 class="text-4xl md:text-5xl font-medium mb-4 tracking-tight">Campaigns & Promotionals</h2>
+                            <p class="text-gray-500 text-base md:text-lg font-light">Exclusive offers and brand initiatives.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Campaign 1 -->
+                        <div class="bg-gradient-to-br from-purple-100 to-pink-100 p-8 rounded-[32px] border border-purple-200 hover-card transition-all cursor-pointer">
+                            <div class="mb-6">
+                                <span class="inline-block px-4 py-2 bg-purple-600 text-white text-xs font-bold rounded-full uppercase tracking-wider">Latest</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Aspire Your Life</h3>
+                            <p class="text-gray-700 text-sm mb-6 leading-relaxed">Our latest campaign celebrating clarity, purpose, and style in everyday life.</p>
+                            <button class="inline-flex items-center text-sm font-bold text-purple-700 uppercase tracking-wider hover:translate-x-1 transition-transform">
+                                Learn More <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </button>
+                        </div>
+
+                        <!-- Campaign 2: LUSTRAA Store Branding -->
+                        <div class="bg-gradient-to-br from-blue-100 to-indigo-100 p-8 rounded-[32px] border border-blue-200 hover-card transition-all cursor-pointer">
+                            <div class="mb-6">
+                                <span class="inline-block px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-full uppercase tracking-wider">Retail</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">LUSTRAA Store Branding</h3>
+                            <p class="text-gray-700 text-sm mb-6 leading-relaxed">Premium retail experience delivering excellence and precision in optical retail.</p>
+                            <button class="inline-flex items-center text-sm font-bold text-blue-700 uppercase tracking-wider hover:translate-x-1 transition-transform">
+                                View Campaign <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </button>
+                        </div>
+
+                        <!-- Campaign 3: LUSTRAA Films -->
+                        <div class="bg-gradient-to-br from-orange-100 to-red-100 p-8 rounded-[32px] border border-orange-200 hover-card transition-all cursor-pointer">
+                            <div class="mb-6">
+                                <span class="inline-block px-4 py-2 bg-orange-600 text-white text-xs font-bold rounded-full uppercase tracking-wider">Video</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Your World Insight – LUSTRAA Films</h3>
+                            <p class="text-gray-700 text-sm mb-6 leading-relaxed">Documentary-style content exploring how Lustraa lenses change the way you see.</p>
+                            <button class="inline-flex items-center text-sm font-bold text-orange-700 uppercase tracking-wider hover:translate-x-1 transition-transform">
+                                Watch Now <i data-lucide="play" class="w-4 h-4 ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-16 bg-white/80 backdrop-blur-xl rounded-[40px] p-8 md:p-12 border border-white/60">
+                        <h3 class="text-3xl md:text-4xl font-bold mb-8 text-center">Delivering Excellence and Precision</h3>
+                        <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto text-sm md:text-base">
+                            Lustraa is committed to delivering exceptional optical solutions backed by innovation, quality, and customer care. Each lens is crafted with precision and designed for those who seek more than just vision correction.
+                        </p>
+                        <div class="flex justify-center">
+                            <button onclick="navigateTo('shop')" class="px-8 py-4 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-transform active:scale-95">
+                                Explore All Products
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -336,17 +476,18 @@
         </div>
 
         <!-- Vertical Side Elements (Fixed Position Relative to Card) -->
-        
+       
         <!-- Left Side: Scroll Indicator -->
-        <div id="side-left" class="absolute left-10 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center space-y-6 transition-opacity duration-300 z-20">
+        <div id="side-left" class="absolute left-8 md:left-10 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center space-y-6 transition-opacity duration-300 z-20">
             <div class="h-32 w-[1px] bg-gray-300"></div>
             <span class="writing-vertical-lr rotate-180 text-[10px] font-bold tracking-[0.2em] text-gray-400">SCROLL</span>
         </div>
 
         <!-- Right Side: Social -->
-        <div id="side-right" class="absolute right-10 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center space-y-8 transition-opacity duration-300 z-20">
-            <a href="#" class="writing-vertical-lr text-[10px] font-bold tracking-[0.2em] text-gray-400 hover:text-black transition-colors transform hover:-translate-x-1">INSTAGRAM</a>
-            <a href="#" class="writing-vertical-lr text-[10px] font-bold tracking-[0.2em] text-gray-400 hover:text-black transition-colors transform hover:-translate-x-1">LINKEDIN</a>
+        <div id="side-right" class="absolute right-8 md:right-10 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center space-y-8 transition-opacity duration-300 z-20">
+            <a href="https://www.instagram.com/lustraa_lenses/" target="_blank" class="writing-vertical-lr text-[10px] font-bold tracking-[0.2em] text-gray-400 hover:text-black transition-colors transform hover:-translate-x-1">INSTAGRAM</a>
+            <a href="https://www.facebook.com/LustraaCoatings" target="_blank" class="writing-vertical-lr text-[10px] font-bold tracking-[0.2em] text-gray-400 hover:text-black transition-colors transform hover:-translate-x-1">FACEBOOK</a>
+            <a href="https://www.youtube.com/channel/UCoIo5_iQNah5MlaKs_wi9ng" target="_blank" class="writing-vertical-lr text-[10px] font-bold tracking-[0.2em] text-gray-400 hover:text-black transition-colors transform hover:-translate-x-1">YOUTUBE</a>
         </div>
 
         <!-- Bottom Border Gradient -->
@@ -354,7 +495,7 @@
     </div>
 
     <!-- Product Strip (Only visible on Home) -->
-    <div id="product-strip" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-xl px-8 py-4 rounded-full shadow-2xl border border-white/40 hidden lg:flex items-center space-x-8 z-50 transition-all duration-500 transform hover:scale-105">
+    <div id="product-strip" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-xl px-6 md:px-8 py-4 rounded-full shadow-2xl border border-white/40 hidden lg:flex items-center space-x-6 md:space-x-8 z-50 transition-all duration-500 transform hover:scale-105">
         <div onclick="navigateTo('shop')" class="flex items-center space-x-3 group cursor-pointer">
             <div class="w-3 h-3 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300"></div>
             <span class="text-xs font-bold text-gray-500 group-hover:text-black transition-colors uppercase tracking-wide">HD</span>
@@ -362,7 +503,7 @@
         <div class="w-[1px] h-4 bg-gray-200"></div>
         <div onclick="navigateTo('shop')" class="flex items-center space-x-3 group cursor-pointer">
             <div class="w-3 h-3 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400"></div>
-            <span class="text-xs font-bold text-gray-500 group-hover:text-black transition-colors uppercase tracking-wide">Blue+</span>
+            <span class="text-xs font-bold text-gray-500 group-hover:text-black transition-colors uppercase tracking-wide">PhotoFun</span>
         </div>
         <div class="w-[1px] h-4 bg-gray-200"></div>
         <div onclick="navigateTo('shop')" class="flex items-center space-x-3 group cursor-pointer">
@@ -376,9 +517,35 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <div class="fixed bottom-4 right-4 flex space-x-3 z-40">
+        <a href="https://www.facebook.com/LustraaCoatings" target="_blank" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-lg">
+            <i data-lucide="facebook" class="w-5 h-5"></i>
+        </a>
+        <a href="https://www.instagram.com/lustraa_lenses/" target="_blank" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-lg">
+            <i data-lucide="instagram" class="w-5 h-5"></i>
+        </a>
+    </div>
+
     <script>
         // Initialize Lucide Icons
         lucide.createIcons();
+
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const btn = document.getElementById('mobile-menu-btn');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('visible');
+                btn.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i>';
+            } else {
+                menu.classList.remove('visible');
+                menu.classList.add('hidden');
+                btn.innerHTML = '<i data-lucide="menu" class="w-4 h-4"></i>';
+            }
+            lucide.createIcons();
+        }
 
         // Navigation Logic
         function navigateTo(pageId) {
@@ -419,9 +586,57 @@
                 sideRight.classList.add('opacity-0', 'pointer-events-none');
                 productStrip.classList.add('translate-y-32', 'opacity-0');
             }
-            
+
+            // Close mobile menu
+            const menu = document.getElementById('mobile-menu');
+            const btn = document.getElementById('mobile-menu-btn');
+            if (!menu.classList.contains('hidden')) {
+                menu.classList.remove('visible');
+                menu.classList.add('hidden');
+                btn.innerHTML = '<i data-lucide="menu" class="w-4 h-4"></i>';
+            }
+           
             // Re-initialize icons for new content if necessary
             lucide.createIcons();
+        }
+
+        // View Product Detail (Modal or Alert for now)
+        function viewProductDetail(productId) {
+            const products = {
+                'hd': {
+                    name: 'Lustraa HD',
+                    description: 'High Definition Clarity with enhanced contrast and reduced eye strain'
+                },
+                'photofun': {
+                    name: 'PhotoFun Fashion',
+                    description: 'Adaptive lens available in 6 vibrant colors'
+                },
+                'luxe': {
+                    name: 'Lustraa Luxe',
+                    description: 'Revolutionary luxury coating with superior light transmission'
+                },
+                'drivease': {
+                    name: 'Drivease',
+                    description: 'Advanced glare reduction for night driving comfort'
+                },
+                'quartz': {
+                    name: 'Quartz',
+                    description: 'Ultimate durability with high breakage resistance'
+                },
+                'myochild': {
+                    name: 'MyoChild',
+                    description: 'Innovative myopia management lens for children'
+                }
+            };
+            const product = products[productId];
+            alert('Product: ' + product.name + '\n\n' + product.description + '\n\nLearn more by visiting our contact page or calling +91 93727 67400');
+        }
+
+        // Contact Form Submission
+        function submitContactForm(event) {
+            event.preventDefault();
+            alert('Thank you for your message! Our team will contact you soon.');
+            event.target.reset();
         }
 
         // Parallax Effect Logic
@@ -434,9 +649,10 @@
             const x = (clientX / window.innerWidth) * 2 - 1;
             const y = (clientY / window.innerHeight) * 2 - 1;
 
-            // Apply transform. 
+            // Apply transform.
             blob.style.transform = `translate(-50%, -50%) translate(${x * 30}px, ${y * 30}px)`;
         });
     </script>
 </body>
 </html>
+
